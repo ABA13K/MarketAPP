@@ -63,7 +63,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with AutomaticKeepAliveClientMixin {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -79,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -118,20 +120,25 @@ class _MyHomePageState extends State<MyHomePage> {
             LinearProgressIndicator(
               backgroundColor: Colors.black,
             ),
-            Container(
-              height: 100,
-              child: AnimatedList(
-                  itemBuilder: (context, index, animation) => Container(
-                        height: 200,
-                        color: Colors.red,
-                      )),
+            RepaintBoundary(
+              child: Container(
+                height: 100,
+                child: AnimatedList(
+                    itemBuilder: (context, index, animation) => Container(
+                          height: 200,
+                          color: Colors.red,
+                        )),
+              ),
             ),
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: TextStyle(fontSize: 25.sp),
+            Offstage(
+              offstage: false,
+              child: Text(
+                '$_counter',
+                style: TextStyle(fontSize: 25.sp),
+              ),
             ),
           ],
         ),
@@ -143,4 +150,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => throw UnimplementedError();
 }
